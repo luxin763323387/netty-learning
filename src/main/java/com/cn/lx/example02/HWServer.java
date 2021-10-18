@@ -1,30 +1,30 @@
-package com.cn.lx.example01;
+package com.cn.lx.example02;
 
+import com.cn.lx.example01.ServerChannelInitializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
-public class HelloWordServer {
+public class HWServer {
 
     private int port;
 
-    public HelloWordServer(int port) {
+    public HWServer(int port) {
         this.port = port;
     }
 
     public static void main(String[] args) {
-        HelloWordServer server = new HelloWordServer(7788);
+        HWServer server = new HWServer(7788);
         server.start();
     }
 
     public void start() {
-        EventLoopGroup bossGroup = new NioEventLoopGroup();
-        EventLoopGroup workGroup = new NioEventLoopGroup();
+        NioEventLoopGroup bossGroup = new NioEventLoopGroup();
+        NioEventLoopGroup wortGroup = new NioEventLoopGroup();
 
         ServerBootstrap server = new ServerBootstrap()
-                .group(bossGroup, workGroup)
+                .group(bossGroup, wortGroup)
                 .channel(NioServerSocketChannel.class)
                 .childHandler(new ServerChannelInitializer());
 
@@ -35,7 +35,7 @@ public class HelloWordServer {
             e.printStackTrace();
         } finally {
             bossGroup.shutdownGracefully();
-            workGroup.shutdownGracefully();
+            wortGroup.shutdownGracefully();
         }
     }
 }

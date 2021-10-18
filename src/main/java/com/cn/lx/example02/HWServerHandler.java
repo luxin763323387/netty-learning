@@ -1,10 +1,13 @@
-package com.cn.lx.example01;
+package com.cn.lx.example02;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
-public class HelloWordServerHandler extends ChannelInboundHandlerAdapter {
-
+public class HWServerHandler extends ChannelInboundHandlerAdapter {
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("channelActive");
+    }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {

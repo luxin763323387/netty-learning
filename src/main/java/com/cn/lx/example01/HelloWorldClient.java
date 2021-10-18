@@ -1,6 +1,5 @@
 package com.cn.lx.example01;
 
-import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
@@ -19,6 +18,11 @@ public class HelloWorldClient {
     public HelloWorldClient(int port, String address) {
         this.port = port;
         this.address = address;
+    }
+
+    public static void main(String[] args) {
+        HelloWorldClient client = new HelloWorldClient(7788, "172.16.0.189");
+        client.start();
     }
 
     public void start() {
@@ -44,10 +48,5 @@ public class HelloWorldClient {
         } finally {
             group.shutdownGracefully();
         }
-    }
-
-    public static void main(String[] args) {
-        HelloWorldClient client = new HelloWorldClient(7788, "172.16.0.189");
-        client.start();
     }
 }
