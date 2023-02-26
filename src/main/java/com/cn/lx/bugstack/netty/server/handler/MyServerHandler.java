@@ -1,7 +1,5 @@
 package com.cn.lx.bugstack.netty.server.handler;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.SocketChannel;
@@ -24,10 +22,12 @@ public class MyServerHandler extends SimpleChannelInboundHandler {
         System.out.println("链接报告Port:" + channel.localAddress().getHostString());
         System.out.println("链接报告完毕");
         // 通知简历客户端链接 建立成功
+        // 因为实现StringEncode
         String str = "通知客户端链接建立成功" + " " + new Date() + " " + channel.localAddress().getHostString() + "\r\n";
-        ByteBuf buf = Unpooled.buffer(str.getBytes().length);
-        buf.writeBytes(str.getBytes("GBK"));
-        ctx.writeAndFlush(buf);
+//        ByteBuf buf = Unpooled.buffer(str.getBytes().length);
+//        buf.writeBytes(str.getBytes("GBK"));
+//        ctx.writeAndFlush(buf);
+        ctx.writeAndFlush(str);
     }
 
     @Override
@@ -42,14 +42,21 @@ public class MyServerHandler extends SimpleChannelInboundHandler {
         System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + " 接收到消息：" + msg);
 
         // 通知客户端发送消息成功
+        // 因为实现了encode编码
         String str = "服务端收到：" + new Date() + " " + msg + "\r\n";
-        ByteBuf buf = Unpooled.buffer(str.getBytes().length);
-        buf.writeBytes(str.getBytes("GBK"));
-        ctx.writeAndFlush(buf);
+//        ByteBuf buf = Unpooled.buffer(str.getBytes().length);
+//        buf.writeBytes(str.getBytes("GBK"));
+        ctx.writeAndFlush(str);
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("客户端断开链接" + ctx.channel().localAddress().toString());
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        ctx.close();
+        System.out.println("异常信息：\r\n" + cause.getMessage());
     }
 }

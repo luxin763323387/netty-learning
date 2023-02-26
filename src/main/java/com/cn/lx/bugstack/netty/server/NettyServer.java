@@ -10,6 +10,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.LineBasedFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.string.StringEncoder;
 
 import java.nio.charset.Charset;
 
@@ -49,6 +50,8 @@ public class NettyServer {
                             ch.pipeline().addLast(new LineBasedFrameDecoder(1024));
                             // 字节码转String 继承了MessageToMessageDecoder
                             ch.pipeline().addLast(new StringDecoder(Charset.forName("GBK")));
+                            // 字节码转String 继承了MessageToMessageDecoder
+                            ch.pipeline().addLast(new StringEncoder(Charset.forName("GBK")));
                             //在管道中添加我们自己的接收数据实现方法
                             ch.pipeline().addLast(new MyServerHandler());
                         }
