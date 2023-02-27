@@ -15,11 +15,14 @@ public class MyServerHandler extends SimpleChannelInboundHandler {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
+
+        //当有客户链接后，添加到channelGroup通信组
+        ChannelHandler.channelGroup.add(ctx.channel());
         // netty的SocketChannel
         SocketChannel channel = (SocketChannel) ctx.channel();
         System.out.println("链接报告信息：有一客户端链接到本服务端");
         System.out.println("链接报告IP:" + channel.localAddress().getHostString());
-        System.out.println("链接报告Port:" + channel.localAddress().getHostString());
+        System.out.println("链接报告Port:" + channel.localAddress().getPort());
         System.out.println("链接报告完毕");
         // 通知简历客户端链接 建立成功
         // 因为实现StringEncode
@@ -46,12 +49,16 @@ public class MyServerHandler extends SimpleChannelInboundHandler {
         String str = "服务端收到：" + new Date() + " " + msg + "\r\n";
 //        ByteBuf buf = Unpooled.buffer(str.getBytes().length);
 //        buf.writeBytes(str.getBytes("GBK"));
-        ctx.writeAndFlush(str);
+
+        //ctx.writeAndFlush(str);
+        // 从DefaultChannelGroup 获取Channel 群发
+        ChannelHandler.channelGroup.writeAndFlush(str);
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("客户端断开链接" + ctx.channel().localAddress().toString());
+        ChannelHandler.channelGroup.remove(ctx.channel());
     }
 
     @Override
