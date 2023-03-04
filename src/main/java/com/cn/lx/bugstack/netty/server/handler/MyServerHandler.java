@@ -17,7 +17,7 @@ public class MyServerHandler extends SimpleChannelInboundHandler {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
 
         //当有客户链接后，添加到channelGroup通信组
-        ChannelHandler.channelGroup.add(ctx.channel());
+        //ChannelHandler.channelGroup.add(ctx.channel());
         // netty的SocketChannel
         SocketChannel channel = (SocketChannel) ctx.channel();
         System.out.println("链接报告信息：有一客户端链接到本服务端");
@@ -30,7 +30,7 @@ public class MyServerHandler extends SimpleChannelInboundHandler {
 //        ByteBuf buf = Unpooled.buffer(str.getBytes().length);
 //        buf.writeBytes(str.getBytes("GBK"));
 //        ctx.writeAndFlush(buf);
-        ctx.writeAndFlush(str);
+        //ctx.writeAndFlush(str);
     }
 
     @Override
@@ -52,13 +52,13 @@ public class MyServerHandler extends SimpleChannelInboundHandler {
 
         //ctx.writeAndFlush(str);
         // 从DefaultChannelGroup 获取Channel 群发
-        ChannelHandler.channelGroup.writeAndFlush(str);
+        //ChannelHandler.channelGroup.writeAndFlush(str);
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("客户端断开链接" + ctx.channel().localAddress().toString());
-        ChannelHandler.channelGroup.remove(ctx.channel());
+        //ChannelHandler.channelGroup.remove(ctx.channel());
     }
 
     @Override
